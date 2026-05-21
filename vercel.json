@@ -1,5 +1,6 @@
 {
   "buildCommand": "pnpm run build",
   "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "artifacts/goodmatter/dist/public"
+  "outputDirectory": "artifacts/goodmatter/dist/public",
+  "framework": "vite"
 }
