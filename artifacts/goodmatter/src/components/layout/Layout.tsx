@@ -12,10 +12,10 @@ interface LayoutProps {
 
 export function Layout({ children, showRightPanel = true }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col md:flex-row overflow-hidden">
+    <div className="h-screen bg-background text-foreground flex overflow-hidden">
       <Sidebar />
-      
-      <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden relative scroll-smooth pb-20 md:pb-0">
+
+      <main className="flex-1 flex flex-col min-w-0 overflow-y-auto overflow-x-hidden relative scroll-smooth pb-20 md:pb-0 scrollbar-thin">
         <TopBar />
         <div className="flex-1 flex flex-col">
           {children}
@@ -23,7 +23,7 @@ export function Layout({ children, showRightPanel = true }: LayoutProps) {
       </main>
 
       {showRightPanel && <RightPanel />}
-      
+
       <MobileNav />
       <ChatBox />
     </div>

@@ -8,6 +8,13 @@ import LandingPage from "@/pages/LandingPage";
 import FounderDashboard from "@/pages/FounderDashboard";
 import InvestorDashboard from "@/pages/InvestorDashboard";
 import FeedPage from "@/pages/FeedPage";
+import AboutPage from "@/pages/AboutPage";
+import StudioPage from "@/pages/StudioPage";
+import InvestorNetworkPage from "@/pages/InvestorNetworkPage";
+import SubscriptionPage from "@/pages/SubscriptionPage";
+import ContactPage from "@/pages/ContactPage";
+import ServicesPage from "@/pages/ServicesPage";
+import MarketplacePage from "@/pages/MarketplacePage";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +23,13 @@ function Router() {
     <Switch>
       <Route path="/" component={LandingPage} />
       <Route path="/feed" component={FeedPage} />
+      <Route path="/about" component={AboutPage} />
+      <Route path="/studio" component={StudioPage} />
+      <Route path="/investors" component={InvestorNetworkPage} />
+      <Route path="/subscription" component={SubscriptionPage} />
+      <Route path="/contact" component={ContactPage} />
+      <Route path="/services" component={ServicesPage} />
+      <Route path="/marketplace" component={MarketplacePage} />
       <Route path="/founder-dashboard" component={FounderDashboard} />
       <Route path="/investor-dashboard" component={InvestorDashboard} />
       <Route component={NotFound} />
@@ -24,7 +38,6 @@ function Router() {
 }
 
 function App() {
-  // Ensure dark mode is always on
   useEffect(() => {
     document.documentElement.classList.add("dark");
   }, []);

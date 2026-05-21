@@ -1,12 +1,14 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
+import { Sparkles, TrendingUp } from "lucide-react";
 
 const RECOMMENDED_FOUNDERS = [
-  { name: "Aria Sharma", company: "EcoGrid AI", match: 94, initials: "AS" },
-  { name: "Dev Patel", company: "FinFlow", match: 88, initials: "DP" },
-  { name: "Sarah Chen", company: "MediSync", match: 82, initials: "SC" },
+  { name: "Aria Sharma", company: "EcoGrid AI", match: 94, initials: "AS", sector: "Climate" },
+  { name: "Dev Patel", company: "FinFlow", match: 88, initials: "DP", sector: "FinTech" },
+  { name: "Sarah Chen", company: "MediSync", match: 82, initials: "SC", sector: "HealthTech" },
 ];
 
 const RECOMMENDED_INVESTORS = [
@@ -17,68 +19,92 @@ const RECOMMENDED_INVESTORS = [
 
 export function RightPanel() {
   return (
-    <aside className="hidden lg:flex flex-col w-72 h-screen sticky top-0 border-l border-white/10 glass-card bg-background/50 overflow-y-auto z-40 p-5 space-y-8">
-      <div>
-        <h3 className="font-display font-semibold text-lg text-white mb-4">Intelligence Panel</h3>
-        
-        <div className="glass-card p-4 rounded-xl space-y-3 mb-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-16 h-16 bg-primary/20 blur-2xl rounded-full -mr-8 -mt-8" />
-          <h4 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">AI Match Score</h4>
-          <div className="flex items-end justify-between">
-            <span className="text-3xl font-display font-bold text-primary text-glow">92%</span>
-            <span className="text-xs text-emerald-400 font-medium mb-1">Highly Compatible</span>
+    <aside className="hidden lg:flex flex-col w-72 h-screen border-l border-white/[0.06] bg-background/60 z-40 flex-shrink-0">
+      {/* Fixed non-scrolling panel — content sized to fit */}
+      <div className="flex flex-col h-full p-5 gap-6 overflow-hidden">
+
+        {/* Header */}
+        <div className="flex items-center gap-2 pt-1">
+          <Sparkles className="w-4 h-4 text-primary" />
+          <h3 className="font-display font-semibold text-sm text-white tracking-wide">Intelligence Panel</h3>
+        </div>
+
+        {/* AI Match Score */}
+        <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 relative overflow-hidden flex-shrink-0">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-primary/15 blur-2xl rounded-full" />
+          <p className="text-[11px] font-semibold tracking-widest text-white/40 uppercase mb-3">AI Match Score</p>
+          <div className="flex items-end justify-between mb-2">
+            <span className="text-4xl font-display font-bold text-primary leading-none">92%</span>
+            <div className="text-right">
+              <p className="text-[11px] text-emerald-400 font-semibold">Highly Compatible</p>
+              <p className="text-[10px] text-white/30">Based on your profile</p>
+            </div>
           </div>
-          <Progress value={92} className="h-1.5 bg-background/50 [&>div]:bg-primary" />
+          <Progress value={92} className="h-1 bg-white/5 [&>div]:bg-gradient-to-r [&>div]:from-primary [&>div]:to-emerald-400" />
         </div>
-      </div>
 
-      <div className="space-y-4">
-        <h4 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase flex items-center justify-between">
-          Recommended Investors
-          <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/20">PRO</Badge>
-        </h4>
-        <div className="space-y-3">
-          {RECOMMENDED_INVESTORS.map((inv, i) => (
-            <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
-              <Avatar className="h-10 w-10 border border-white/10 group-hover:border-primary/50 transition-colors">
-                <AvatarFallback className="bg-background text-xs">{inv.initials}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">{inv.name}</p>
-                <p className="text-xs text-muted-foreground truncate">{inv.fund}</p>
+        {/* Recommended Investors */}
+        <div className="flex flex-col gap-2 flex-shrink-0">
+          <div className="flex items-center justify-between">
+            <p className="text-[11px] font-semibold tracking-widest text-white/40 uppercase">Top Investors</p>
+            <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/20 px-1.5 py-0">PRO</Badge>
+          </div>
+          <div className="space-y-1">
+            {RECOMMENDED_INVESTORS.map((inv, i) => (
+              <div key={i} className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/[0.04] transition-colors cursor-pointer group">
+                <Avatar className="h-8 w-8 border border-white/10 group-hover:border-primary/40 transition-colors flex-shrink-0">
+                  <AvatarFallback className="bg-gradient-to-br from-primary/20 to-cyan-400/10 text-[11px] font-bold text-white">{inv.initials}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-white truncate">{inv.name}</p>
+                  <p className="text-[11px] text-white/40 truncate">{inv.fund}</p>
+                </div>
+                <span className="text-[11px] font-bold text-primary flex-shrink-0">{inv.match}%</span>
               </div>
-              <div className="text-xs font-bold text-primary">{inv.match}%</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="space-y-4">
-        <h4 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">Trending Startups</h4>
-        <div className="space-y-3">
-          {RECOMMENDED_FOUNDERS.map((founder, i) => (
-            <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
-              <Avatar className="h-10 w-10 border border-white/10 group-hover:border-primary/50 transition-colors">
-                <AvatarFallback className="bg-background text-xs">{founder.initials}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">{founder.company}</p>
-                <p className="text-xs text-muted-foreground truncate">{founder.name}</p>
+        {/* Trending Startups */}
+        <div className="flex flex-col gap-2 flex-shrink-0">
+          <div className="flex items-center gap-1.5">
+            <TrendingUp className="w-3 h-3 text-emerald-400" />
+            <p className="text-[11px] font-semibold tracking-widest text-white/40 uppercase">Trending Startups</p>
+          </div>
+          <div className="space-y-1">
+            {RECOMMENDED_FOUNDERS.map((founder, i) => (
+              <div key={i} className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/[0.04] transition-colors cursor-pointer group">
+                <Avatar className="h-8 w-8 border border-white/10 group-hover:border-emerald-400/40 transition-colors flex-shrink-0">
+                  <AvatarFallback className="bg-gradient-to-br from-emerald-400/20 to-cyan-400/10 text-[11px] font-bold text-white">{founder.initials}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-white truncate">{founder.company}</p>
+                  <p className="text-[11px] text-white/40 truncate">{founder.name}</p>
+                </div>
+                <Badge variant="outline" className="text-[10px] bg-emerald-400/8 text-emerald-400 border-emerald-400/20 px-1.5 py-0 flex-shrink-0">{founder.match}%</Badge>
               </div>
-              <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/20">{founder.match}%</Badge>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="mt-auto pt-6 border-t border-white/10">
-        <div className="glass-card p-4 rounded-xl text-center space-y-3 border-primary/30 glow-cyan">
-          <h4 className="text-sm font-bold text-white">Unlock All Profiles</h4>
-          <p className="text-xs text-muted-foreground">Get full access to investor contact info and AI scoring.</p>
-          <Button className="w-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-[0_0_15px_rgba(21,169,255,0.4)]">
-            Upgrade to Pro
-          </Button>
+        {/* Upgrade CTA — pushes to bottom */}
+        <div className="mt-auto flex-shrink-0">
+          <div className="rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/10 via-cyan-400/5 to-transparent p-4 text-center space-y-3">
+            <div className="w-8 h-8 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center mx-auto">
+              <Sparkles className="w-4 h-4 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-white">Unlock All Profiles</p>
+              <p className="text-[11px] text-white/40 mt-0.5">Full contact info & AI scoring</p>
+            </div>
+            <Link href="/subscription">
+              <Button className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-semibold rounded-xl h-8 shadow-[0_0_15px_rgba(21,169,255,0.35)]">
+                Upgrade to Pro
+              </Button>
+            </Link>
+          </div>
         </div>
+
       </div>
     </aside>
   );
