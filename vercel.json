@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm run build",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "outputDirectory": "artifacts/goodmatter/dist/public",
+  "nodeVersion": "20.x"
+}
