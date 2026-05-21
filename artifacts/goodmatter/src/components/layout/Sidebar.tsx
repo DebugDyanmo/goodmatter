@@ -11,18 +11,22 @@ import {
   Store, 
   MessageSquare, 
   LogOut,
-  Wrench
+  Wrench,
+  Rss,
+  TrendingUp,
 } from "lucide-react";
 import logoPath from "@assets/Screenshot_2026-05-21_133045_1779364430897.png";
 
 const NAV_ITEMS = [
   { label: "Home",              icon: Home,           href: "/",               hash: null },
+  { label: "Deal Feed",         icon: Rss,            href: "/feed",           hash: null },
   { label: "About",             icon: Info,           href: "/",               hash: "about" },
   { label: "Studio",            icon: Briefcase,      href: "/",               hash: "studio" },
   { label: "Investor Network",  icon: Users,          href: "/",               hash: "investors" },
   { label: "Founder Network",   icon: Rocket,         href: "/",               hash: "founders" },
   { label: "Subscription",      icon: Crown,          href: "/",               hash: "subscription" },
   { label: "My Submissions",    icon: FileText,       href: "/founder-dashboard", hash: null },
+  { label: "Investor View",     icon: TrendingUp,     href: "/investor-dashboard", hash: null },
   { label: "My Services",       icon: Wrench,         href: "/",               hash: "services" },
   { label: "Service Marketplace", icon: Store,        href: "/",               hash: "marketplace" },
   { label: "Contact",           icon: MessageSquare,  href: "/",               hash: "contact" },

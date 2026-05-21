@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import LandingPage from "@/pages/LandingPage";
 import FounderDashboard from "@/pages/FounderDashboard";
 import InvestorDashboard from "@/pages/InvestorDashboard";
+import FeedPage from "@/pages/FeedPage";
 
 const queryClient = new QueryClient();
 
@@ -14,6 +15,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={LandingPage} />
+      <Route path="/feed" component={FeedPage} />
       <Route path="/founder-dashboard" component={FounderDashboard} />
       <Route path="/investor-dashboard" component={InvestorDashboard} />
       <Route component={NotFound} />
