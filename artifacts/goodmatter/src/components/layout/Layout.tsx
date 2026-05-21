@@ -3,6 +3,7 @@ import { Sidebar } from "./Sidebar";
 import { RightPanel } from "./RightPanel";
 import { TopBar } from "./TopBar";
 import { MobileNav } from "./MobileNav";
+import { ChatBox } from "@/components/chat/ChatBox";
 
 interface LayoutProps {
   children: ReactNode;
@@ -24,6 +25,7 @@ export function Layout({ children, showRightPanel = true }: LayoutProps) {
       {showRightPanel && <RightPanel />}
       
       <MobileNav />
+      <ChatBox />
     </div>
   );
 }
