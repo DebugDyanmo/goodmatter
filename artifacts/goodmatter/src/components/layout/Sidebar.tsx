@@ -11,25 +11,23 @@ import {
   Store,
   MessageSquare,
   LogOut,
-  Wrench,
   Rss,
   TrendingUp,
 } from "lucide-react";
 import logoPath from "@assets/Screenshot_2026-05-21_133045_1779364430897.png";
 
 const NAV_ITEMS = [
-  { label: "Home",               icon: Home,           href: "/" },
-  { label: "Deal Feed",          icon: Rss,            href: "/feed" },
-  { label: "About",              icon: Info,           href: "/about" },
-  { label: "Studio",             icon: Briefcase,      href: "/studio" },
-  { label: "Investor Network",   icon: Users,          href: "/investors" },
-  { label: "Founder Network",    icon: Rocket,         href: "/founder-dashboard" },
-  { label: "Subscription",       icon: Crown,          href: "/subscription" },
-  { label: "My Submissions",     icon: FileText,       href: "/founder-dashboard" },
-  { label: "Investor View",      icon: TrendingUp,     href: "/investor-dashboard" },
-  { label: "My Services",        icon: Wrench,         href: "/services" },
-  { label: "Service Marketplace",icon: Store,          href: "/marketplace" },
-  { label: "Contact",            icon: MessageSquare,  href: "/contact" },
+  { label: "Home",                icon: Home,          href: "/" },
+  { label: "Deal Feed",           icon: Rss,           href: "/feed" },
+  { label: "About",               icon: Info,          href: "/about" },
+  { label: "Studio",              icon: Briefcase,     href: "/studio" },
+  { label: "Investor Network",    icon: Users,         href: "/investors" },
+  { label: "Founder Dashboard",   icon: Rocket,        href: "/founder-dashboard" },
+  { label: "Subscription",        icon: Crown,         href: "/subscription" },
+  { label: "My Submissions",      icon: FileText,      href: "/founder-dashboard" },
+  { label: "Deal Intelligence",   icon: TrendingUp,    href: "/feed" },
+  { label: "Service Marketplace", icon: Store,         href: "/marketplace" },
+  { label: "Contact",             icon: MessageSquare, href: "/contact" },
 ];
 
 export function Sidebar() {
