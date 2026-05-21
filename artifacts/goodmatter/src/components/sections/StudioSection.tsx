@@ -4,10 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle, CreditCard, ArrowRight } from "lucide-react";
 
 const SERVICES = [
-  { title: "Pitch Deck Orchestration", price: "₹30,000", features: ["VC narrative structure", "Professional investor-ready design"], featured: false, color: "#15A9FF" },
-  { title: "Financial Modeling",        price: "₹55,000", features: ["3–5 year projections", "Unit economics", "Cash flow analysis"], featured: false, color: "#00C853" },
-  { title: "Growth Stage Advisory",     price: "₹65,000", features: ["Valuation analysis", "Fundraising strategy", "Growth readiness"], featured: false, color: "#FFC107" },
-  { title: "Investor-Ready Bundle",     price: "₹80,000", features: ["Financial model", "Valuation", "Professional deck"], featured: true, color: "#15A9FF" },
+  { title: "Pitch Deck Orchestration", price: "₹30,000", paise: 3000000, features: ["VC narrative structure", "Professional investor-ready design"], featured: false, color: "#15A9FF" },
+  { title: "Financial Modeling",        price: "₹55,000", paise: 5500000, features: ["3–5 year projections", "Unit economics", "Cash flow analysis"], featured: false, color: "#00C853" },
+  { title: "Growth Stage Advisory",     price: "₹65,000", paise: 6500000, features: ["Valuation analysis", "Fundraising strategy", "Growth readiness"], featured: false, color: "#FFC107" },
+  { title: "Investor-Ready Bundle",     price: "₹80,000", paise: 8000000, features: ["Financial model", "Valuation", "Professional deck"], featured: true, color: "#15A9FF" },
 ];
 
 const CFO_TIERS = [
@@ -66,7 +66,7 @@ export function StudioSection() {
                 </ul>
               </div>
               <Button
-                onClick={() => navigate("/subscription")}
+                onClick={() => navigate(`/subscription?service=${encodeURIComponent(svc.title)}&price=${svc.price}&paise=${svc.paise}`)}
                 className="w-full mt-auto gap-2 rounded-xl text-sm"
                 style={{ background: `${svc.color}20`, border: `1px solid ${svc.color}40`, color: svc.color }}
               >

@@ -1,54 +1,49 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { AuthModals } from "@/components/modals/AuthModals";
-import { ArrowRight, Sparkles, TrendingUp, CheckCircle, Zap } from "lucide-react";
+import { ArrowRight, Zap, TrendingUp, Bookmark } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
 
-const FEED_CARDS = [
+const LIVE_DEALS = [
   {
-    type: "deal",
     company: "EcoGrid AI",
     tagline: "AI-powered energy optimization for commercial buildings",
     sector: "CleanTech",
     stage: "Seed",
     ask: "₹2.4Cr",
     score: 94,
-    badges: ["Trending Deal", "Verified Founder"],
-    time: "2h ago",
     initials: "EG",
     color: "#00C853",
+    growth: "+34% MoM",
   },
   {
-    type: "investor",
-    company: "Marcus Lindholm",
-    tagline: "Expressed interest in 3 new startups this week",
-    sector: "Linea Capital",
-    stage: "Series A–C",
-    ask: "₹3Cr–₹12Cr",
-    score: 96,
-    badges: ["High Investor Alignment", "Recently Active"],
-    time: "4h ago",
-    initials: "ML",
-    color: "#15A9FF",
-  },
-  {
-    type: "deal",
     company: "FinFlow",
     tagline: "Embedded lending infrastructure for Bharat's SMEs",
     sector: "Fintech",
     stage: "Pre-Seed",
     ask: "₹80L",
     score: 88,
-    badges: ["AI Scored", "New"],
-    time: "6h ago",
     initials: "FF",
+    color: "#15A9FF",
+    growth: "+28% MoM",
+  },
+  {
+    company: "MediSync",
+    tagline: "AI-first electronic health records for tier-2 hospitals",
+    sector: "HealthTech",
+    stage: "Seed",
+    ask: "₹3.5Cr",
+    score: 91,
+    initials: "MS",
     color: "#FFC107",
+    growth: "+51% MoM",
   },
 ];
 
 export function HeroSection() {
   const [authOpen, setAuthOpen] = useState(false);
   const [authTab, setAuthTab] = useState<"login-founder" | "login-investor" | "signup">("signup");
+  const { login } = useAuth();
 
   const openAuth = (tab: "login-founder" | "login-investor" | "signup") => {
     setAuthTab(tab);
@@ -56,140 +51,165 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden hero-mesh">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#0047B3]/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "0s", animationDuration: "6s" }} />
-        <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-[#15A9FF]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "2s", animationDuration: "8s" }} />
-        <div className="absolute bottom-1/4 left-1/3 w-56 h-56 bg-[#00C853]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "4s", animationDuration: "7s" }} />
-
-        {/* Pixel particles from logo */}
-        <div className="absolute top-16 left-[10%] w-4 h-4 bg-[#00C853] opacity-60 animate-bounce" style={{ animationDelay: "0.5s", animationDuration: "3s" }} />
-        <div className="absolute top-24 left-[15%] w-3 h-3 bg-[#15A9FF] opacity-50 animate-bounce" style={{ animationDelay: "1s", animationDuration: "4s" }} />
-        <div className="absolute top-32 left-[8%] w-2 h-2 bg-[#FFC107] opacity-70 animate-bounce" style={{ animationDelay: "1.5s", animationDuration: "3.5s" }} />
-        <div className="absolute top-20 right-[12%] w-4 h-4 bg-[#FF3D3D] opacity-50 animate-bounce" style={{ animationDelay: "0.8s", animationDuration: "5s" }} />
-        <div className="absolute top-40 right-[18%] w-3 h-3 bg-[#FFC107] opacity-60 animate-bounce" style={{ animationDelay: "2s", animationDuration: "3s" }} />
-        <div className="absolute bottom-32 right-[10%] w-2 h-2 bg-[#00C853] opacity-70 animate-bounce" style={{ animationDelay: "1.2s", animationDuration: "4.5s" }} />
-        <div className="absolute bottom-24 left-[20%] w-3 h-3 bg-[#15A9FF] opacity-50 animate-bounce" style={{ animationDelay: "0.3s", animationDuration: "6s" }} />
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+      {/* Subtle ambient — one gradient, no animation */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_60%_40%_at_20%_60%,rgba(0,71,179,0.12),transparent)]" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(21,169,255,0.07),transparent_70%)]" />
       </div>
 
-      <div className="relative z-10 px-6 md:px-10 py-20 max-w-4xl mx-auto w-full">
-        <div className="flex items-center gap-2 mb-6">
-          <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#15A9FF]" />
-            <span className="text-xs text-white/70 font-medium">Private Market Intelligence Platform</span>
-          </div>
-        </div>
+      <div className="relative z-10 px-6 md:px-12 py-24 max-w-5xl mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-        <h1
-          className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight mb-6"
-          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-        >
-          Direct Access To{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#15A9FF] to-[#00C853]">
-            High-Signal
-          </span>{" "}
-          Capital Networks
-        </h1>
+          {/* Left — copy */}
+          <div>
+            <p className="text-sm font-medium text-white/40 mb-5 tracking-wide">
+              GoodMatter — Private Market Network
+            </p>
 
-        <p className="text-lg md:text-xl text-white/60 max-w-2xl mb-10 leading-relaxed">
-          GoodMatter connects exceptional founders with thoughtful investors through curated private market intelligence and direct communication.
-        </p>
+            <h1 className="text-5xl md:text-6xl font-bold text-white leading-[1.08] tracking-tight mb-6"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              Where founders<br />
+              meet the right<br />
+              <span className="text-[#15A9FF]">capital.</span>
+            </h1>
 
-        <div className="flex flex-wrap gap-4 mb-16">
-          <Button
-            data-testid="button-submit-startup"
-            size="lg"
-            className="bg-[#15A9FF] hover:bg-[#15A9FF]/90 text-white rounded-full px-8 h-12 shadow-[0_0_30px_rgba(21,169,255,0.4)] gap-2 text-base font-semibold"
-            onClick={() => openAuth("signup")}
-          >
-            Submit Your Startup
-            <ArrowRight className="w-4 h-4" />
-          </Button>
-          <Button
-            data-testid="button-explore-investors"
-            size="lg"
-            variant="outline"
-            className="border-white/20 text-white bg-white/5 hover:bg-white/10 rounded-full px-8 h-12 gap-2 text-base font-semibold backdrop-blur-sm"
-            onClick={() => openAuth("login-investor")}
-          >
-            Explore Investor Network
-          </Button>
-        </div>
+            <p className="text-[17px] text-white/50 leading-relaxed mb-10 max-w-sm">
+              A curated network connecting verified founders with accredited investors — through direct communication, not noise.
+            </p>
 
-        <div className="flex flex-wrap items-center gap-6 text-sm text-white/40">
-          <div className="flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-[#00C853]" />
-            <span>Verified founders only</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-[#00C853]" />
-            <span>Accredited investors</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-[#00C853]" />
-            <span>AI-powered matching</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="relative z-10 px-6 md:px-10 pb-16 space-y-4 max-w-4xl mx-auto w-full">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-4 h-4 text-[#15A9FF]" />
-          <span className="text-xs font-semibold tracking-wider text-white/50 uppercase">Live Activity Feed</span>
-        </div>
-
-        {FEED_CARDS.map((card, i) => (
-          <div
-            key={i}
-            data-testid={`card-feed-${i}`}
-            className="glass-card rounded-2xl p-5 cursor-pointer group"
-            style={{ animationDelay: `${i * 0.1}s` }}
-          >
-            <div className="flex items-start gap-4">
-              <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-                style={{ background: `${card.color}20`, border: `1px solid ${card.color}40`, color: card.color }}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                size="lg"
+                className="bg-[#15A9FF] hover:bg-[#15A9FF]/90 text-white rounded-xl px-7 h-12 shadow-[0_0_24px_rgba(21,169,255,0.35)] gap-2 font-semibold"
+                onClick={() => openAuth("signup")}
               >
-                {card.initials}
+                Apply as Founder
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white/15 text-white/70 hover:text-white hover:border-white/30 bg-transparent rounded-xl px-7 h-12 font-semibold"
+                onClick={() => openAuth("login-investor")}
+              >
+                Investor Access
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-6 mt-10 pt-10 border-t border-white/[0.06]">
+              <div>
+                <p className="text-2xl font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>₹47Cr+</p>
+                <p className="text-xs text-white/35 mt-0.5">Capital connected</p>
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <div>
-                    <span className="font-semibold text-white text-sm">{card.company}</span>
-                    <span className="text-white/40 text-xs ml-2">{card.time}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-2.5 py-1 flex-shrink-0">
-                    <Zap className="w-3 h-3 text-[#15A9FF]" />
-                    <span className="text-xs font-bold text-[#15A9FF]">{card.score}%</span>
-                  </div>
-                </div>
-                <p className="text-sm text-white/60 mb-3">{card.tagline}</p>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5 text-white/50">{card.sector}</span>
-                  <span className="text-xs bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5 text-white/50">{card.stage}</span>
-                  <span className="text-xs bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5 text-white/50">{card.ask}</span>
-                  {card.badges.map((badge, bi) => (
-                    <Badge
-                      key={bi}
-                      variant="outline"
-                      className={`text-[10px] rounded-full px-2.5 py-0.5 ${
-                        badge.includes("Trending") ? "bg-[#FFC107]/10 border-[#FFC107]/30 text-[#FFC107]" :
-                        badge.includes("Verified") ? "bg-[#00C853]/10 border-[#00C853]/30 text-[#00C853]" :
-                        badge.includes("High") ? "bg-[#15A9FF]/10 border-[#15A9FF]/30 text-[#15A9FF]" :
-                        "bg-white/5 border-white/10 text-white/50"
-                      }`}
-                    >
-                      {badge}
-                    </Badge>
-                  ))}
-                </div>
+              <div className="w-px h-8 bg-white/10" />
+              <div>
+                <p className="text-2xl font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>200+</p>
+                <p className="text-xs text-white/35 mt-0.5">Verified founders</p>
+              </div>
+              <div className="w-px h-8 bg-white/10" />
+              <div>
+                <p className="text-2xl font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>85+</p>
+                <p className="text-xs text-white/35 mt-0.5">Active investors</p>
               </div>
             </div>
           </div>
-        ))}
+
+          {/* Right — live deal cards */}
+          <div className="relative">
+            {/* Stacked depth shadow */}
+            <div className="absolute inset-0 translate-y-3 translate-x-3 rounded-2xl bg-white/[0.02] border border-white/[0.04]" />
+            <div className="absolute inset-0 translate-y-1.5 translate-x-1.5 rounded-2xl bg-white/[0.03] border border-white/[0.05]" />
+
+            <div className="relative rounded-2xl border border-white/[0.08] overflow-hidden"
+              style={{
+                background: "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
+                boxShadow: "0 24px 64px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.07) inset",
+              }}
+            >
+              {/* Panel header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-[#00C853] animate-pulse" />
+                  <span className="text-xs font-medium text-white/50">Live Deal Flow</span>
+                </div>
+                <span className="text-[11px] text-white/25">Updated just now</span>
+              </div>
+
+              {/* Deal rows */}
+              <div className="divide-y divide-white/[0.05]">
+                {LIVE_DEALS.map((deal, i) => (
+                  <div key={i} className="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.03] transition-colors group cursor-pointer">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0"
+                      style={{ background: `${deal.color}18`, border: `1px solid ${deal.color}35`, color: deal.color }}
+                    >
+                      {deal.initials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-sm font-semibold text-white">{deal.company}</span>
+                        <span className="text-[11px] text-white/30">{deal.stage}</span>
+                      </div>
+                      <p className="text-xs text-white/40 truncate">{deal.tagline}</p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                      <div className="flex items-center gap-1">
+                        <Zap className="w-3 h-3 text-[#15A9FF]" />
+                        <span className="text-xs font-bold text-[#15A9FF]">{deal.score}%</span>
+                      </div>
+                      <span className="text-[11px] font-medium" style={{ color: deal.color }}>{deal.growth}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Panel footer */}
+              <div className="px-5 py-3 border-t border-white/[0.06] flex items-center justify-between">
+                <span className="text-[11px] text-white/25">Showing 3 of 47 active deals</span>
+                <button
+                  onClick={() => openAuth("login-investor")}
+                  className="text-[11px] text-[#15A9FF] hover:text-[#15A9FF]/80 flex items-center gap-1 transition-colors"
+                >
+                  View all <ArrowRight className="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+
+            {/* Floating stat pill */}
+            <div className="absolute -bottom-4 -left-4 flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-white/[0.08]"
+              style={{
+                background: "linear-gradient(135deg, rgba(10,22,48,0.95) 0%, rgba(7,20,39,0.98) 100%)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.06) inset",
+              }}
+            >
+              <TrendingUp className="w-4 h-4 text-[#00C853]" />
+              <div>
+                <p className="text-xs font-bold text-white">₹2.4Cr avg deal size</p>
+                <p className="text-[10px] text-white/35">This month</p>
+              </div>
+            </div>
+
+            {/* Floating bookmark pill */}
+            <div className="absolute -top-4 -right-4 flex items-center gap-2 px-3 py-2 rounded-xl border border-white/[0.08]"
+              style={{
+                background: "linear-gradient(135deg, rgba(10,22,48,0.95) 0%, rgba(7,20,39,0.98) 100%)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.06) inset",
+              }}
+            >
+              <Bookmark className="w-3.5 h-3.5 text-[#FFC107]" fill="#FFC107" />
+              <span className="text-xs font-semibold text-white">18 saved this week</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <AuthModals open={authOpen} onOpenChange={setAuthOpen} defaultTab={authTab} />
+      <AuthModals
+        open={authOpen}
+        onOpenChange={setAuthOpen}
+        defaultTab={authTab}
+        onSuccess={(r) => { login(r); setAuthOpen(false); }}
+      />
     </section>
   );
 }

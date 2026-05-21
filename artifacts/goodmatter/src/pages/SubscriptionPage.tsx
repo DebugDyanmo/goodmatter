@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Crown, Zap, Shield, Star, ArrowRight, Sparkles } from "lucide-react";
+import { useLocation } from "wouter";
 
 declare global {
   interface Window {
@@ -74,20 +75,34 @@ export default function SubscriptionPage() {
   const [selected, setSelected] = useState("quarterly");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [location] = useLocation();
+
+  // Parse service details passed from Studio or Marketplace
+  const params = new URLSearchParams(
+    typeof window !== "undefined" ? window.location.search : ""
+  );
+  const serviceParam  = params.get("service");
+  const priceParam    = params.get("price");
+  const paiseParam    = params.get("paise");
+
+  // If a specific service was passed, show it as a one-time payment instead of subscription plans
+  const isServicePayment = !!serviceParam && !!priceParam;
+  const servicePaise = paiseParam ? Number(paiseParam) : null;
 
   const plan = PLANS.find((p) => p.id === selected)!;
 
   async function handlePay() {
     setLoading(true);
+    const payAmount = isServicePayment && servicePaise ? servicePaise : plan.paise;
+    const payLabel  = isServicePayment ? serviceParam! : `${plan.label} Subscription`;
     try {
       const res = await fetch(`${BASE}/api/payment/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: selected }),
+        body: JSON.stringify({ plan: selected, amount: payAmount }),
       });
 
       if (!res.ok) {
-        // API not configured — open Razorpay in key-less demo mode
         openDemoCheckout();
         return;
       }
@@ -104,7 +119,7 @@ export default function SubscriptionPage() {
         amount,
         currency,
         name: "GoodMatter",
-        description: `${plan.label} Subscription`,
+        description: payLabel,
         order_id: orderId,
         theme: { color: "#15A9FF" },
         handler: () => setSuccess(true),
@@ -162,39 +177,44 @@ export default function SubscriptionPage() {
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 mb-4">
             <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs text-primary font-medium">Intelligence Network</span>
+            <span className="text-xs text-primary font-medium">
+              {isServicePayment ? "One-Time Service" : "Intelligence Network"}
+            </span>
           </div>
           <h2 className="text-4xl font-display font-bold text-white mb-3">
-            Join the Private Market<br />
-            <span className="text-primary">Intelligence Network</span>
+            {isServicePayment ? serviceParam : <>Join the Private Market<br /><span className="text-primary">Intelligence Network</span></>}
           </h2>
           <p className="text-white/50 text-base max-w-md mx-auto">
-            Direct access to 3,840+ verified investors, AI-powered deal matching, and curated private market intelligence.
+            {isServicePayment
+              ? "Complete your payment to get started with this service."
+              : "Direct access to 3,840+ verified investors, AI-powered deal matching, and curated private market intelligence."}
           </p>
         </div>
 
-        {/* Plan selector */}
-        <div className="flex gap-2 mb-8 p-1 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
-          {PLANS.map((p) => (
-            <button
-              key={p.id}
-              onClick={() => setSelected(p.id)}
-              className={`flex-1 flex flex-col items-center gap-0.5 py-3 px-2 rounded-xl transition-all duration-200 ${
-                selected === p.id
-                  ? "bg-primary/15 border border-primary/30 text-white"
-                  : "text-white/40 hover:text-white/70 hover:bg-white/[0.03]"
-              }`}
-            >
-              <span className="text-sm font-semibold">{p.label}</span>
-              <span className={`text-xs ${selected === p.id ? "text-primary" : "text-white/30"}`}>{p.price}</span>
-              {p.badge && (
-                <Badge variant="outline" className={`text-[10px] px-1.5 py-0 h-4 mt-0.5 ${p.badgeClass}`}>
-                  {p.badge}
-                </Badge>
-              )}
-            </button>
-          ))}
-        </div>
+        {/* Plan selector — only for subscriptions */}
+        {!isServicePayment && (
+          <div className="flex gap-2 mb-8 p-1 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+            {PLANS.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => setSelected(p.id)}
+                className={`flex-1 flex flex-col items-center gap-0.5 py-3 px-2 rounded-xl transition-all duration-200 ${
+                  selected === p.id
+                    ? "bg-primary/15 border border-primary/30 text-white"
+                    : "text-white/40 hover:text-white/70 hover:bg-white/[0.03]"
+                }`}
+              >
+                <span className="text-sm font-semibold">{p.label}</span>
+                <span className={`text-xs ${selected === p.id ? "text-primary" : "text-white/30"}`}>{p.price}</span>
+                {p.badge && (
+                  <Badge variant="outline" className={`text-[10px] px-1.5 py-0 h-4 mt-0.5 ${p.badgeClass}`}>
+                    {p.badge}
+                  </Badge>
+                )}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Main card */}
         <div className="relative rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background overflow-hidden mb-6">
@@ -205,13 +225,16 @@ export default function SubscriptionPage() {
           <div className="relative z-10 p-8">
             {/* Price */}
             <div className="flex items-baseline gap-1 mb-1">
-              <span className="text-5xl font-display font-bold text-white">{plan.price}</span>
-              <span className="text-white/40 text-sm">{plan.period}</span>
+              <span className="text-5xl font-display font-bold text-white">
+                {isServicePayment ? priceParam : plan.price}
+              </span>
+              {!isServicePayment && <span className="text-white/40 text-sm">{plan.period}</span>}
             </div>
-            {plan.badge && (
+            {!isServicePayment && plan.badge && (
               <Badge variant="outline" className={`text-xs mb-6 ${plan.badgeClass}`}>{plan.badge}</Badge>
             )}
-            {!plan.badge && <div className="mb-6" />}
+            {!isServicePayment && !plan.badge && <div className="mb-6" />}
+            {isServicePayment && <div className="mb-6" />}
 
             {/* Features grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
@@ -237,7 +260,7 @@ export default function SubscriptionPage() {
               ) : (
                 <span className="flex items-center gap-2">
                   <Zap className="w-5 h-5" />
-                  Pay {plan.price} via Razorpay
+                  Pay {isServicePayment ? priceParam : plan.price} via Razorpay
                 </span>
               )}
             </Button>

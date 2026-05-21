@@ -91,7 +91,7 @@ export function AboutSection() {
                 data-testid="button-founder-linkedin"
                 variant="outline"
                 className="gap-2 bg-[#0A66C2]/10 border-[#0A66C2]/30 text-[#0A66C2] hover:bg-[#0A66C2]/20 hover:border-[#0A66C2]/50 rounded-xl"
-                onClick={() => window.open("https://linkedin.com", "_blank")}
+                onClick={() => window.open("https://www.linkedin.com/in/saswata-dey-a5aa64176/", "_blank")}
               >
                 <Linkedin className="w-4 h-4" />
                 Connect on LinkedIn
