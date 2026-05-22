@@ -87,6 +87,7 @@ export function AuthModals({ open, onOpenChange, defaultTab = "login-founder", o
     });
   }
 
+  return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-[#071427] border border-white/10 text-white max-w-md p-0 overflow-hidden rounded-2xl backdrop-blur-xl">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0047B3]/10 to-[#15A9FF]/5 pointer-events-none" />
