@@ -1,16 +1,5 @@
 {
-  "version": 2,
-  "buildCommand": "cd artifacts/goodmatter && pnpm install --frozen-lockfile && pnpm run build",
+  "buildCommand": "pnpm run build",
   "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "artifacts/goodmatter/dist/public",
-  "framework": "vite",
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
+  "outputDirectory": "artifacts/goodmatter/dist/public"
 }
